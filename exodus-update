@@ -1,0 +1,286 @@
+#!/bin/bash
+
+# Setting Variables and functions
+
+Date=$(date +"%-y.%-m.%-d")
+Date1=$(date +"%-y.%-m.%-d" -d "1 days ago")
+Date2=$(date +"%-y.%-m.%-d" -d "2 days ago")
+Date3=$(date +"%-y.%-m.%-d" -d "3 days ago")
+Date4=$(date +"%-y.%-m.%-d" -d "4 days ago")
+Date5=$(date +"%-y.%-m.%-d" -d "5 days ago")
+Date6=$(date +"%-y.%-m.%-d" -d "6 days ago")
+Date7=$(date +"%-y.%-m.%-d" -d "7 days ago")
+Date8=$(date +"%-y.%-m.%-d" -d "8 days ago")
+Date9=$(date +"%-y.%-m.%-d" -d "9 days ago")
+Date10=$(date +"%-y.%-m.%-d" -d "10 days ago") 
+Date11=$(date +"%-y.%-m.%-d" -d "11 days ago")
+Date12=$(date +"%-y.%-m.%-d" -d "12 days ago")
+Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
+Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
+Address2=$'_amd64.deb'
+
+
+#check if exodus is installed
+if [ -e /usr/bin/exodus ]
+	then Version=$(exodus --version)
+echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0mPlease, looking for the latest version"
+	else echo ""
+		 echo -e "Exodus is NOT installed (or not in the /usr/bin/ dir) The script will now download the latest version"
+fi
+
+#Create folders and remove old ones
+cd ~/Downloads
+rm -rf ExodusTemp > /dev/null 2>&1
+mkdir ExodusTemp
+cd ExodusTemp
+
+echo ""
+
+if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date1" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date1}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date2" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date2}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date3" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date3}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date4" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date4}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date5" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date5}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date6" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date6}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date7" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date7}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		  
+		exit 	
+	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date8" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date8}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date9" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date9}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date10" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date10}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date11" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date11}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"
+		exit
+   	fi
+fi
+
+if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
+then
+	if [ "$Date12" = "$Version" ]
+		then echo "Your wallet is the latest version"
+	exit
+   	else echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date12}${Address2} > /dev/null 2>&1
+		echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed" 
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"
+		exit
+   	fi
+	
+fi
+
