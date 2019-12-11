@@ -23,7 +23,7 @@ Address2=$'_amd64.deb'
 #check if exodus is installed
 if [ -e /usr/bin/exodus ]
 	then Version=$(exodus --version)
-echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0mPlease, looking for the latest version"
+echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m, looking for the latest version"
 	else echo ""
 		 echo -e "Exodus is NOT installed (or not in the /usr/bin/ dir) The script will now download the latest version"
 fi
