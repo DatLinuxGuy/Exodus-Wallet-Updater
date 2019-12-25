@@ -1,7 +1,8 @@
+#V2.1
 #!/bin/bash
 
-# Setting Variables and functions
 
+# Setting Variables and functions
 Install () {
 	
 	echo "Download has been successful, Please input password to install wallet"
@@ -9,7 +10,8 @@ Install () {
 		sudo dpkg -i exodus_*
 		echo "Exodus has now succesfully installed"
 		sleep 1
-		rm -rf ../ExodusTemp
+		cd ..
+		rm -rf ExodusTemp
 		echo ""
 		echo "To run type 'exodus' without quotes and press enter"		 
 		exit
@@ -32,22 +34,42 @@ Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
 Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
 Address2=$'_amd64.deb'
 
+#Create folders and remove old ones
+cd ~/Downloads
+sleep 1
+mkdir ExodusTemp
+cd ExodusTemp
+
+#Checking updates for script
+V=$(head -n1 /usr/local/bin/exodus-update | sed 's/\(.\{2\}\)*/\1/')
+curl -s https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download | head -n1 > VersionCheck 
+newV=$(sed 's/\(.\{2\}\)*/\1/' VersionCheck)
+
+if [ "$V" = "$newV" ] ;then 
+	echo "Script is up-to-date"
+	cd ..
+	rm -rf ExodusTemp
+else
+	echo -e "New Version ""\e[92m${newV}\e[0m"" has been found. Downloading and configuring now"
+	sleep 2
+	wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update > /dev/null 2>&1
+	sleep 1
+	chmod +x exodus-update 
+	sudo mv exodus-update /usr/local/bin/exodus-update
+	echo "Update complete, Please run 'exodus-update' again without quotes"
+	rm VersionCheck
+	exit
+fi
+
 
 #check if exodus is installed
 if [ -e /usr/bin/exodus ]
 	then Version=$(exodus --version)
-echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m, looking for the latest version"
+echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m- looking for the latest version"
 	else echo ""
 		 echo -e "Exodus is NOT installed (or not in the /usr/bin/ dir) The script will now download the latest version"
 fi
 
-#Create folders and remove old ones
-cd ~/Downloads
-rm -rf ExodusTemp > /dev/null 2>&1
-mkdir ExodusTemp
-cd ExodusTemp
-
-echo ""
 
 # Installing
 
