@@ -2,6 +2,19 @@
 
 # Setting Variables and functions
 
+Install () {
+	
+	echo "Download has been successful, Please input password to install wallet"
+		echo ""
+		sudo dpkg -i exodus_*
+		echo "Exodus has now succesfully installed"
+		sleep 1
+		rm -rf ../ExodusTemp
+		echo ""
+		echo "To run type 'exodus' without quotes and press enter"		 
+		exit
+}
+
 Date=$(date +"%-y.%-m.%-d")
 Date1=$(date +"%-y.%-m.%-d" -d "1 days ago")
 Date2=$(date +"%-y.%-m.%-d" -d "2 days ago")
@@ -36,22 +49,15 @@ cd ExodusTemp
 
 echo ""
 
+# Installing
+
 if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
 then
 	if [ "$Date" = "$Version" ]
 		then echo "Your wallet is the latest version"
 	exit
    	else echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+   		Install
    	fi
 fi
 
@@ -61,16 +67,7 @@ then
 		then echo "Your wallet is the latest version"
 	exit
    	else echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date1}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+   		Install
    	fi
 fi
 
@@ -81,15 +78,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date2}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		Install
    	fi
 fi
 
@@ -100,15 +89,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date3}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		Install
    	fi
 fi
 
@@ -119,15 +100,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date4}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		Install
    	fi
 fi
 
@@ -138,15 +111,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date5}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		Install
    	fi
 fi
 
@@ -157,15 +122,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date6}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		Install
    	fi
 fi
 
@@ -176,15 +133,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date7}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		  
-		exit 	
+		Install	
 	fi
 fi
 
@@ -195,15 +144,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date8}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		
-		exit
+		Install
    	fi
 fi
 
@@ -214,15 +155,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date9}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		
-		exit
+		Install
    	fi
 fi
 
@@ -233,15 +166,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date10}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"
-		exit
+		Install
    	fi
 fi
 
@@ -252,15 +177,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date11}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed"
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"
-		exit
+		Install
    	fi
 fi
 
@@ -271,16 +188,7 @@ then
 	exit
    	else echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
    		wget ${Address1}${Date12}${Address2} > /dev/null 2>&1
-		echo "Download has been successful, Please input password to install wallet"
-		echo ""
-		sudo dpkg -i exodus_*
-		echo "Exodus has now succesfully installed" 
-		sleep 1
-		rm -rf ../ExodusTemp
-		echo ""
-		echo "To run type 'exodus' without quotes and press enter"
-		exit
+		Install
    	fi
 	
 fi
-
