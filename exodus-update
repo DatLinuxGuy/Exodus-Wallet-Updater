@@ -1,4 +1,4 @@
-#V3.0
+#V3.1
 #!/bin/bash
 
 
@@ -125,6 +125,7 @@ then
 		then echo "Your wallet is the latest version"
 	exit
    	else echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date}${Address2} > /dev/null 2>&1
    		Install
    	fi
 fi
@@ -135,6 +136,7 @@ then
 		then echo "Your wallet is the latest version"
 	exit
    	else echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date1}${Address2} > /dev/null 2>&1
    		Install
    	fi
 fi
