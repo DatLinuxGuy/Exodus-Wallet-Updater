@@ -1,5 +1,6 @@
-#V2.1
+#V3.0
 #!/bin/bash
+
 
 # Setting Variables and functions
 Install () {
@@ -9,7 +10,7 @@ Install () {
 		sudo dpkg -i exodus_*
 		echo "Exodus has now succesfully installed"
 		sleep 1
-		cd ..
+		cd .. 
 		rm -rf ExodusTemp
 		echo ""
 		echo "To run type 'exodus' without quotes and press enter"		 
@@ -33,32 +34,78 @@ Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
 Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
 Address2=$'_amd64.deb'
 
+
+# Github updater
+if [ -e ~/.config/Exodus-Wallet-Updater/ ] ;then 
+	echo "Checking github for updates on the script"
+else
+	echo "Repo is not configured in Default location ( ~/.config/Exodus-Wallet-Updater) - Cloning repo now from github.com/datlinuxguy"
+	sleep 2
+	cd ~/.config
+	git clone https://github.com/DatLinuxGuy/Exodus-Wallet-Updater.git > /dev/null 2>&1
+	sleep 1
+	echo "Clone complete"
+	cd Exodus-Wallet-Updater
+	chmod +x exodus-update
+	sudo mv exodus-update /usr/local/bin/exodus-update
+	git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
+	chmod -w .script.hash
+	echo "Hash for latest version"
+	cat .script.hash
+	echo "Install complete. Please run 'exodus-update' without quotes"
+	sleep 2
+	exit 
+fi
+
+cd ~/.config/Exodus-Wallet-Updater/
+OldV=$(cat .script.hash)
+NewV=$(git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/')
+CVersion=$(head -n1 /usr/local/bin/exodus-update | sed 's|[+#]||g')
+if [ "$OldV" = "$NewV" ] ;then 
+	echo -e "Script Version is ""\e[92m${CVersion}\e[0m"" and up to date"
+else
+	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
+	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
+	nVersion=$(tail -n1 NVersion)
+	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
+	sleep 2
+	git pull > /dev/null 2>&1 
+	sudo mv exodus-update /usr/local/bin
+	chmod +w .script.hash
+	git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
+	chmod -w .script.hash
+	echo "Hash installed"
+	cat .script.hash
+	echo "Update complete. Please run 'exodus-update' again without quotes"
+	exit
+fi
+
 #Create folders and remove old ones
 cd ~/Downloads
 sleep 1
 mkdir ExodusTemp
 cd ExodusTemp
 
-#Checking updates for script
-V=$(head -n1 /usr/local/bin/exodus-update | sed 's/\(.\{2\}\)*/\1/')
-curl -s https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download | head -n1 > VersionCheck 
-newV=$(sed 's/\(.\{2\}\)*/\1/' VersionCheck)
-
-if [ "$V" = "$newV" ] ;then 
-	echo "Script is up-to-date"
-	cd ..
-	rm -rf ExodusTemp
-else
-	echo -e "New Version ""\e[92m${newV}\e[0m"" has been found. Downloading and configuring now"
-	sleep 2
-	wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update > /dev/null 2>&1
-	sleep 1
-	chmod +x exodus-update 
-	sudo mv exodus-update /usr/local/bin/exodus-update
-	echo "Update complete, Please run 'exodus-update' again without quotes"
-	rm VersionCheck
-	exit
-fi
+#Checking updates for script - Back up/Update from local server 
+#V=$(head -n1 /usr/local/bin/exodus-update | sed 's/\(.\{2\}\)*/\1/')
+#curl -s https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download | head -n1 > VersionCheck 
+#newV=$(sed 's/\(.\{2\}\)*/\1/' VersionCheck)
+#
+#if [ "$V" = "$newV" ] ;then 
+#echo "Script is up-to-date"
+#cd ..
+#rm -rf ExodusTemp
+#else
+#echo -e "New Version ""\e[92m${newV}\e[0m"" has been found. Downloading and configuring now"
+#sleep 2
+#wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update > /dev/null 2>&1
+#sleep 1
+#chmod +x exodus-update 
+#sudo mv exodus-update /usr/local/bin/exodus-update
+#echo "Update complete, Please run 'exodus-update' again without quotes"
+#rm VersionCheck
+#exit
+#fi
 
 
 #check if exodus is installed
