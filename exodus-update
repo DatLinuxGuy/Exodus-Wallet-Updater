@@ -1,4 +1,4 @@
-#V3.2
+#V3.3
 #!/bin/bash
 
 
@@ -67,7 +67,7 @@ else
 	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
 	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
 	nVersion=$(tail -n1 NVersion)
-	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
+	echo -e "Version ""\e[92m${NewV}\e[0m"" is available Pulling now..."
 	sleep 2
 	git pull > /dev/null 2>&1 
 	chmod +x exodus-update
