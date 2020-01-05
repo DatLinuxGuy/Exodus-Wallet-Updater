@@ -1,4 +1,4 @@
-#V3.3
+#V3.4
 #!/bin/bash
 
 
@@ -67,7 +67,7 @@ else
 	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
 	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
 	nVersion=$(tail -n1 NVersion)
-	echo -e "Version ""\e[92m${NewV}\e[0m"" is available Pulling now..."
+	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
 	sleep 2
 	git pull > /dev/null 2>&1 
 	chmod +x exodus-update
@@ -83,8 +83,7 @@ fi
 
 #Create folders and remove old ones
 cd ~/Downloads
-sleep 1
-mkdir ExodusTemp
+mkdir ExodusTemp > /dev/null 2>&1 
 cd ExodusTemp
 
 #Checking updates for script - Back up/Update from local server 
@@ -109,7 +108,7 @@ cd ExodusTemp
 #fi
 
 
-#check if exodus is installed
+# Check if exodus is installed
 if [ -e /usr/bin/exodus ]
 	then Version=$(exodus --version)
 echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m- looking for the latest version"
@@ -117,9 +116,7 @@ echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m- looking for 
 		 echo -e "Exodus is NOT installed (or not in the /usr/bin/ dir) The script will now download the latest version"
 fi
 
-
-# Installing
-
+# Grab and install wallet
 if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
 then
 	if [ "$Date" = "$Version" ]
