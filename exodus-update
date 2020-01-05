@@ -1,4 +1,4 @@
-#V3.1
+#V3.2
 #!/bin/bash
 
 
@@ -70,6 +70,7 @@ else
 	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
 	sleep 2
 	git pull > /dev/null 2>&1 
+	chmod +x exodus-update
 	sudo mv exodus-update /usr/local/bin
 	chmod +w .script.hash
 	git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
