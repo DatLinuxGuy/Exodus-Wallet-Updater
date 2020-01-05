@@ -1,4 +1,4 @@
-#V3.4
+#V3.5
 #!/bin/bash
 
 
@@ -66,6 +66,7 @@ if [ "$OldV" = "$NewV" ] ;then
 else
 	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
 	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
+	sleep 1
 	nVersion=$(tail -n1 NVersion)
 	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
 	sleep 2
@@ -75,7 +76,7 @@ else
 	chmod +w .script.hash
 	git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
 	chmod -w .script.hash
-	echo "Hash installed"
+	echo -e "\e[92mHash Installed\e[0m"
 	cat .script.hash
 	echo "Update complete. Please run 'exodus-update' again without quotes"
 	exit
