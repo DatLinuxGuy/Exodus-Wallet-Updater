@@ -1,10 +1,13 @@
-#V3.6
+#V4.0
 #!/bin/bash
+
+# To be updated in next versions. 
+# Log file creation for easier management and troubleshooting
+
 
 
 # Setting Variables and functions
 Install () {
-	
 	echo "Download has been successful, Please input password to install wallet"
 		echo ""
 		sudo dpkg -i exodus_*
@@ -13,8 +16,7 @@ Install () {
 		cd .. 
 		rm -rf ExodusTemp
 		echo ""
-		echo "To run type 'exodus' without quotes and press enter"		 
-		exit
+		echo "To run type 'exodus' without quotes and press enter"
 }
 
 Date=$(date +"%-y.%-m.%-d")
@@ -35,7 +37,7 @@ Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
 Address2=$'_amd64.deb'
 
 
-# Github updater
+# Checking Github for updates to the script
 if [ -e ~/.config/Exodus-Wallet-Updater/ ] ;then 
 	echo "Checking github for updates on the script"
 else
@@ -68,7 +70,7 @@ else
 	sleep 1
 	nVersion=$(tail -n1 NVersion)
 	echo -e "Version ""\e[92m${nVersion}\e[0m"" is available Pulling now..."
-	sleep 2
+	sleep 1
 	git pull > /dev/null 2>&1 
 	chmod +x exodus-update
 	sudo mv exodus-update /usr/local/bin
@@ -81,9 +83,10 @@ else
 	exit
 fi
 
-#Create folders and remove old ones
+#Remove and create new folders
 cd ~/Downloads
-mkdir ExodusTemp > /dev/null 2>&1 
+rm -rf ExodusTemp > /dev/null 2>&1 
+mkdir ExodusTemp 
 cd ExodusTemp
 
 #Checking updates for script - Back up/Update from local server 
@@ -117,146 +120,275 @@ echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m- looking for 
 fi
 
 # Grab and install wallet
-if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date}${Address2} > /dev/null 2>&1
-   		Install
+if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date1" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date1}${Address2} > /dev/null 2>&1
-   		Install
+if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date1" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date1}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date1}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date2" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date2}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date2" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date2}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date2}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date3" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date3}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date3" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date3}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date3}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date4" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date4}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date4" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date4}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date4}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date5" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date5}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date5" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date5}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date5}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date6" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date6}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date6" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date6}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date6}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date7" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date7}${Address2} > /dev/null 2>&1
-		Install	
-	fi
-fi
-
-if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date8" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date8}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date7" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date7}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date7}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date9" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date9}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date8" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date8}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date8}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date10" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date10}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date9" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date9}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date9}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date11" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date11}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date10" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date10}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date10}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
 
-if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]]
-then
-	if [ "$Date12" = "$Version" ]
-		then echo "Your wallet is the latest version"
-	exit
-   	else echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date12}${Address2} > /dev/null 2>&1
-		Install
+if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date11" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date11}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date11}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
    	fi
-	
-fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
+
+if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+	if [ "$Date12" != "$Version" ] ;then 
+		echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
+   		wget ${Address1}${Date12}${Address2}
+   		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date12}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
+   		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+   		echo "Checking sha256sum on files to make sure they match"
+   		if [ "$Hashlocal" = "$Hashremote" ] ;then
+   			echo -e "\e[92mHash Matches\e[0m, Installing now..."
+   			sleep 2
+   			Install
+   			exit
+   			else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
+   				echo "Please check .deb file in ~/Downloads/ExodusTemp"
+   			exit
+   		fi
+   	fi
+   	echo "Your wallet is the latest version"
+   	exit
+fi 
