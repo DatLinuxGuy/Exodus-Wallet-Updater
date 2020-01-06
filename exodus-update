@@ -1,4 +1,4 @@
-#V3.5
+#V3.6
 #!/bin/bash
 
 
@@ -39,21 +39,19 @@ Address2=$'_amd64.deb'
 if [ -e ~/.config/Exodus-Wallet-Updater/ ] ;then 
 	echo "Checking github for updates on the script"
 else
-	echo "Repo is not configured in Default location ( ~/.config/Exodus-Wallet-Updater) - Cloning repo now from github.com/datlinuxguy"
-	sleep 2
+	echo "Repo was not found in ~/.config/Exodus-Wallet-Updater - Cloning now from'github.com/datlinuxguy'"
 	cd ~/.config
 	git clone https://github.com/DatLinuxGuy/Exodus-Wallet-Updater.git > /dev/null 2>&1
 	sleep 1
-	echo "Clone complete"
+	echo -e "\e[92mComplete\e[0m"
 	cd Exodus-Wallet-Updater
 	chmod +x exodus-update
 	sudo mv exodus-update /usr/local/bin/exodus-update
+	show=$(head -n1 /usr/local/bin/exodus-update | sed 's|[#]||g' )
 	git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
 	chmod -w .script.hash
-	echo "Hash for latest version"
-	cat .script.hash
-	echo "Install complete. Please run 'exodus-update' without quotes"
-	sleep 2
+	echo -e "Version ""\e[92m${show}\e[0m"" has been installed"
+	echo "Please run 'exodus-update' without quotes to install wallet"
 	exit 
 fi
 
@@ -65,6 +63,7 @@ if [ "$OldV" = "$NewV" ] ;then
 	echo -e "Script Version is ""\e[92m${CVersion}\e[0m"" and up to date"
 else
 	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
+	rm NVersion > /dev/null 2>&1 
 	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
 	sleep 1
 	nVersion=$(tail -n1 NVersion)
