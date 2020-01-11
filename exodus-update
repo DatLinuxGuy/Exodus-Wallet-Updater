@@ -1,8 +1,7 @@
-#V4.3
+#V4.3.1
 #!/bin/bash
 
 # To be updated in next versions. 
-# function creation for hash checking
 # Log file creation for easier management and troubleshooting
 
 
@@ -26,6 +25,13 @@ if  grep -- 'Network is Unreachable\|Network is unreachable' 2>&1 Networktest
 	exit
 else echo -e "\e[92;3mNetwork test succesfull\e[0m" 
 	sleep 2
+fi
+
+if which git | grep git > /dev/null 2>&1; then
+echo "git detected"
+else 
+echo "git not installed please run wihtout quotes 'sudo apt install git' then run script again"
+exit
 fi
 
 # Setting Variables and functions
