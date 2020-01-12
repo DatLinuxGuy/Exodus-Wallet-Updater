@@ -1,23 +1,28 @@
-#V4.3.1
+#V4.4
 #!/bin/bash
 
-# To be updated in next versions. 
-# Log file creation for easier management and troubleshooting
+# To be updated in next versions -
+# not sure?? ideas are welcome
 
-
-# needs to be checked, test log creation >>>
-# exec 1>~/Desktop/exodus.log 2>&1 | tee ~/Desktop/exodus.log
+dates=$(date '+%H:%M-%d.%m.%y')
+if [ -e ~/.config/Exodus-Wallet-Updater/logs ] ;then 
+set -x
+exec 2>~/.config/Exodus-Wallet-Updater/logs/exodus.log-$dates
+else 
+   set -x
+   exec 2>/tmp/exodus.log-$dates
+fi
 
 
 #Remove and create new folders
 cd ~/Downloads
-rm -rf ExodusTemp > /dev/null 2>&1 
+rm -rf ExodusTemp  
 mkdir ExodusTemp 
 cd ExodusTemp
 
 # Network test
-ping -c2 8.8.8.8 > Networktest 2>&1
-if  grep -- 'Network is Unreachable\|Network is unreachable' 2>&1 Networktest
+ping -c2 8.8.8.8 > Networktest 
+if  grep -- 'Network is Unreachable\|Network is unreachable'  Networktest
 	then echo -e "\e[41;1;37m*** Cannot ping Googles DNS - Please check your connection ***\e[0m"
 	echo "--------------------Please see ip info below-----------------------"
 	echo ""
@@ -27,19 +32,19 @@ else echo -e "\e[92;3mNetwork test succesfull\e[0m"
 	sleep 2
 fi
 
-if which git | grep git > /dev/null 2>&1; then
-echo "git detected"
+if which git | grep git > /dev/null; then
+echo -e "\e[92;3mGit Detected\e[0m"
 else 
-echo "git not installed please run wihtout quotes 'sudo apt install git' then run script again"
+echo "git is NOT installed, please run without quotes 'sudo apt install git' then run script again"
 exit
 fi
 
 # Setting Variables and functions
 Install () {
-	if ls ~/Downloads/ExodusTemp/exodus* > /dev/null 2>&1; then
+	if ls ~/Downloads/ExodusTemp/exodus* ; then
 		echo "Please input your admin password to install wallet"
 		echo ""
-		sudo dpkg -i exodus_*
+		sudo dpkg -i exodus_* 
 		sleep 1
 		V=$(/usr/bin/exodus --version)
 		cd .. 
@@ -88,8 +93,9 @@ if [ -e ~/.config/Exodus-Wallet-Updater/ ] ;then
 else
 	echo "Repo was not found in ~/.config/Exodus-Wallet-Updater - Cloning now from'github.com/datlinuxguy'"
 	cd ~/.config
-	git clone https://github.com/DatLinuxGuy/Exodus-Wallet-Updater.git > /dev/null 2>&1
+	git clone https://github.com/DatLinuxGuy/Exodus-Wallet-Updater.git 
 	sleep 1
+   mkdir logs > /dev/null 2>&1
 	echo -e "\e[92mComplete\e[0m"
 	cd Exodus-Wallet-Updater
 	chmod +x exodus-update
@@ -103,6 +109,7 @@ else
 fi
 
 cd ~/.config/Exodus-Wallet-Updater/
+mkdir logs > /dev/null 2>&1
 OldV=$(cat .script.hash)
 NewV=$(git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/')
 CVersion=$(head -n1 /usr/local/bin/exodus-update | sed 's|[+#]||g')
@@ -110,13 +117,13 @@ if [ "$OldV" = "$NewV" ] ;then
 	echo -e "Script Version is ""\e[92m${CVersion}\e[0m"" and up to date"
 else
 	echo -e "Current script Version is ""\e[92m${CVersion}\e[0m"
-	rm NVersion > /dev/null 2>&1 
+	rm NVersion  
 	git diff | head -n7 | sed 's|[-+#]||g' > NVersion 
 	sleep 1
 	nVersion=$(tail -n1 NVersion)
 	echo -e "A new version is available, Pulling now..."
 	sleep 1
-	git pull > /dev/null 2>&1 
+	git pull  
 	chmod +x exodus-update
 	sudo mv exodus-update /usr/local/bin
 	chmod +w .script.hash
@@ -140,7 +147,7 @@ fi
 #else
 #echo -e "New Version ""\e[92m${newV}\e[0m"" has been found. Downloading and configuring now"
 #sleep 2
-#wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update > /dev/null 2>&1
+#wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update 
 #sleep 1
 #chmod +x exodus-update 
 #sudo mv exodus-update /usr/local/bin/exodus-update
@@ -161,10 +168,10 @@ fi
 cd ~/Downloads/ExodusTemp
 
 # Grab and install wallet
-if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date}${Address2} -q --show-progress
+   		wget ${Address1}${Date}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -174,10 +181,10 @@ if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1 | grep 'HTTP/1.1 200 
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date1" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date1}${Address2} -q --show-progress 
+   		wget ${Address1}${Date1}${Address2} 2>&1 -q --show-progress 
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date1}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -187,10 +194,10 @@ if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date2" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date2}${Address2} -q --show-progress
+   		wget ${Address1}${Date2}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date2}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -200,10 +207,10 @@ if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date3" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date3}${Address2} -q --show-progress
+   		wget ${Address1}${Date3}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date3}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -212,10 +219,10 @@ if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	echo "Your wallet is the latest version"
    	exit
 fi 
-if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date4" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date4}${Address2} -q --show-progress
+   		wget ${Address1}${Date4}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date4}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -225,10 +232,10 @@ if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date5" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date5}${Address2} -q --show-progress
+   		wget ${Address1}${Date5}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date5}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -238,10 +245,10 @@ if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date6" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date6}${Address2} -q --show-progress 
+   		wget ${Address1}${Date6}${Address2} 2>&1 -q --show-progress 
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date6}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -251,10 +258,10 @@ if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date7" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date7}${Address2} -q --show-progress
+   		wget ${Address1}${Date7}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date7}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -264,10 +271,10 @@ if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date8" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date8}${Address2} -q --show-progress
+   		wget ${Address1}${Date8}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date8}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -277,10 +284,10 @@ if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi  
 
-if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date9" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date9}${Address2} -q --show-progress
+   		wget ${Address1}${Date9}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date9}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -290,10 +297,10 @@ if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1 | grep 'HTTP/1.1 200
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date10" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date10}${Address2} -q --show-progress
+   		wget ${Address1}${Date10}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date10}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -303,10 +310,10 @@ if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1 | grep 'HTTP/1.1 20
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date11" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date11}${Address2} -q --show-progress
+   		wget ${Address1}${Date11}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date11}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
@@ -316,10 +323,10 @@ if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1 | grep 'HTTP/1.1 20
    	exit
 fi 
 
-if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1 | grep 'HTTP/1.1 200 OK'` ]] ;then
+if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
 	if [ "$Date12" != "$Version" ] ;then 
 		echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
-   		wget ${Address1}${Date12}${Address2} -q --show-progress
+   		wget ${Address1}${Date12}${Address2} 2>&1 -q --show-progress
    		Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date12}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
    		Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
    		echo "Checking sha256sum on files to make sure they match"
