@@ -1,9 +1,8 @@
-#V4.5
+#V4.6
 #!/bin/bash
 
-# To be updated in next versions -
-# not sure?? ideas are welcome
-
+# Built for Ubuntu 18.04
+# Ideas are welcome
 
 dates=$(date '+%H:%M-%d.%m.%y')
 if [ -e ~/.config/Exodus-Wallet-Updater/logs ] ;then 
@@ -89,7 +88,8 @@ Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
 Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
 Address2=$'_amd64.deb'
 
-
+# Sometimes .config is not created on fresh install of ubuntu (test on ubuntu server) 
+mkdir -p ~/.config
 # Checking Github for updates to the script
 if [ -e ~/.config/Exodus-Wallet-Updater/ ] ;then 
    echo "Checking github for updates to the script"
@@ -132,7 +132,7 @@ else
    chmod +w .script.hash
    git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
    chmod -w .script.hash
-   echo -e "\e[92mHash Installed\e[0m"
+   echo -e "\e[92mHash From Git Version\e[0m"
    cat .script.hash
    echo "Update complete. Please run 'exodus-update' again without quotes"
    exit
