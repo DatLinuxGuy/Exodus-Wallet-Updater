@@ -1,4 +1,4 @@
-#V4.6
+#V4.7
 #!/bin/bash
 
 # Built for Ubuntu 18.04
@@ -60,6 +60,7 @@ Install () {
 }
 
 HashCheck () {    
+   echo "Checking sha256sum on files to make sure they match"
    if [ "$Hashlocal" = "$Hashremote" ] ;then
          echo -e "\e[92mHash Matches\e[0m"
          sleep 1
@@ -69,6 +70,16 @@ HashCheck () {
             echo "Please check .deb file in ~/Downloads/ExodusTemp"
             exit
       fi
+}
+
+killexodus () {
+   echo "Checking if Exodus is running"
+   if pgrep Exodus | 2>&1 ;then
+      echo "Exodus running - Closing" 
+      sleep 2
+      pkill Exodus
+   else echo "Not running - Updating now"
+   fi
 }
 
 Date=$(date +"%-y.%-m.%-d")
@@ -138,28 +149,6 @@ else
    exit
 fi
 
-#Checking updates for script - Back up/Update from local server 
-#V=$(head -n1 /usr/local/bin/exodus-update | sed 's/\(.\{2\}\)*/\1/')
-#curl -s https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download | head -n1 > VersionCheck 
-#newV=$(sed 's/\(.\{2\}\)*/\1/' VersionCheck)
-#
-#if [ "$V" = "$newV" ] ;then 
-#echo "Script is up-to-date"
-#cd ..
-#rm -rf ExodusTemp
-#else
-#echo -e "New Version ""\e[92m${newV}\e[0m"" has been found. Downloading and configuring now"
-#sleep 2
-#wget --https-only https://datlinuxguy.com/index.php/s/BMiZFYdxDs4Yi6q/download -O exodus-update 
-#sleep 1
-#chmod +x exodus-update 
-#sudo mv exodus-update /usr/local/bin/exodus-update
-#echo "Update complete, Please run 'exodus-update' again without quotes"
-#rm VersionCheck
-#exit
-#fi
-
-
 # Check if exodus is installed
 if [ -e /usr/bin/exodus ]
    then Version=$(exodus --version)
@@ -170,6 +159,9 @@ fi
 
 cd ~/Downloads/ExodusTemp
 
+# Check if exodus is runnig and close
+
+
 # Grab and install wallet
 if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
    if [ "$Date" != "$Version" ] ;then 
@@ -177,7 +169,7 @@ if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1  | grep 'HTTP/1.1 200
          wget ${Address1}${Date}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -190,7 +182,7 @@ if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date1}${Address2} 2>&1 -q --show-progress 
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date1}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -203,7 +195,7 @@ if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date2}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date2}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -216,7 +208,7 @@ if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date3}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date3}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -228,7 +220,7 @@ if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date4}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date4}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -241,7 +233,7 @@ if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date5}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date5}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -254,7 +246,7 @@ if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date6}${Address2} 2>&1 -q --show-progress 
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date6}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -267,7 +259,7 @@ if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date7}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date7}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -280,7 +272,7 @@ if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date8}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date8}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -293,7 +285,7 @@ if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1  | grep 'HTTP/1.1 20
          wget ${Address1}${Date9}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date9}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -306,7 +298,7 @@ if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1  | grep 'HTTP/1.1 2
          wget ${Address1}${Date10}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date10}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -319,7 +311,7 @@ if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1  | grep 'HTTP/1.1 2
          wget ${Address1}${Date11}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date11}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -332,7 +324,7 @@ if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1  | grep 'HTTP/1.1 2
          wget ${Address1}${Date12}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date12}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
@@ -345,7 +337,7 @@ if [[ `wget -S --spider ${Address1}${Date13}${Address2} 2>&1  | grep 'HTTP/1.1 2
          wget ${Address1}${Date12}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.io/releases/hashes-exodus-${Date13}.txt | grep "_amd64.deb" | sed 's/\(.\{64\}\).*/\1/')
          Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
-         echo "Checking sha256sum on files to make sure they match"
+         killexodus #Call function
          HashCheck #Call function
       fi
       echo "Your wallet is the latest version"
