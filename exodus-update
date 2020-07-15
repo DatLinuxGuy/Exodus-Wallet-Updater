@@ -1,4 +1,4 @@
-#V4.71
+#V4.72
 #!/bin/bash
 
 # Built for Ubuntu 18.04
@@ -75,8 +75,8 @@ HashCheck () {
 
 killexodus () {
    echo "Checking if Exodus is running"
-   if pgrep Exodus | 2>&1 ;then
-      echo "Exodus running - Closing now" 
+   if pgrep Exodus ;then
+      echo "^^^^ Closed Exodus procsesses before updating " 
       sleep 2
       pkill Exodus
    else echo "Exodus not running - Updating now"
