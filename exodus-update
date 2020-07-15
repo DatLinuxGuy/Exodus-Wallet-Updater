@@ -1,4 +1,4 @@
-#V4.7
+#V4.71
 #!/bin/bash
 
 # Built for Ubuntu 18.04
@@ -53,7 +53,8 @@ Install () {
       rm -rf ExodusTemp
       echo ""
       echo -e "\e[92mVesion $V has been installed\e[0m"
-      echo "To run type 'exodus' without quotes and press enter"
+      echo -e "\e[92mRunning Now....\e[0m"
+      exodus
    else echo "Couldn't find .deb in ~/Downloads/ExodusTemp - Exiting"
       exit
    fi
@@ -75,10 +76,10 @@ HashCheck () {
 killexodus () {
    echo "Checking if Exodus is running"
    if pgrep Exodus | 2>&1 ;then
-      echo "Exodus running - Closing" 
+      echo "Exodus running - Closing now" 
       sleep 2
       pkill Exodus
-   else echo "Not running - Updating now"
+   else echo "Exodus not running - Updating now"
    fi
 }
 
@@ -145,7 +146,7 @@ else
    chmod -w .script.hash
    echo -e "\e[92mHash From Git Version\e[0m"
    cat .script.hash
-   echo "Update complete. Please run 'exodus-update' again without quotes"
+   echo " Script update complete. Please run 'exodus-update' again without quotes"
    exit
 fi
 
