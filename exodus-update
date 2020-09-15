@@ -4,6 +4,7 @@
 # Built for Ubuntu 18.04
 # Ideas are welcome
 
+# Set place for log files
 dates=$(date '+%H:%M-%d.%m.%y')
 if [ -e ~/.config/Exodus-Wallet-Updater/logs ] ;then 
 set -x
@@ -13,13 +14,15 @@ else
    exec 2>/tmp/exodus.log-$dates
 fi
 
-#Remove and create new folders
-cd ~/Downloads
-rm -rf ExodusTemp  
-mkdir ExodusTemp 
+# Delete logs files older than 30 days
+find ~/.config/Exodus-Wallet-Updater/logs/* -type f -mtime +30 -delete
+
+# Create new Temp folders
+cd ~/Downloads  
+mkdir -p ExodusTemp 
 cd ExodusTemp
 
-# Network test
+# Network test. Edit IP if googles DNS is blocked for you
 ping -c2 8.8.8.8 > Networktest 
 if  grep -- 'Network is Unreachable\|Network is unreachable'  Networktest
    then echo -e "\e[41;1;37m*** Cannot ping Googles DNS - Please check your connection ***\e[0m"
@@ -49,12 +52,12 @@ Install () {
       sudo dpkg -i exodus_* 
       sleep 1
       V=$(/usr/bin/exodus --version)
-      cd .. 
+      cd ~/Downloads
       rm -rf ExodusTemp
       echo ""
       echo -e "\e[92mVesion $V has been installed\e[0m"
       echo -e "\e[92mRunning Now....\e[0m"
-      exodus
+      exodus &
    else echo "Couldn't find .deb in ~/Downloads/ExodusTemp - Exiting"
       exit
    fi
@@ -68,7 +71,8 @@ HashCheck () {
       Install
       exit
          else echo -e "\033[5;41;1;37m   *** HASH DOESN'T MATCH ***   \033[0m"
-            echo "Please check .deb file in ~/Downloads/ExodusTemp"
+            echo "Please double and triple check the .deb file in ~/Downloads/ExodusTemp BEFORE manually installing"
+            echo "Delete the file and then head to https://www.exodus.io/download if you're unsure"
             exit
       fi
 }
