@@ -115,7 +115,8 @@ else
    cd Exodus-Wallet-Updater
    chmod +x exodus-update
    sudo mv exodus-update /usr/local/bin/exodus-update
-   show=$(head -n2 /usr/local/bin/exodus-update | sed 's|[#!/bin/bash ]||g' )
+   show=$(head -n2 /usr/local/bin/exodus-update | sed 's|[#!/bin/bash ]||g')
+   show=$(echo $show)
    git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
    chmod -w .script.hash
    echo -e "Version ""\e[92m${show}\e[0m"" has been installed"
@@ -128,6 +129,7 @@ mkdir logs > /dev/null 2>&1
 OldV=$(cat .script.hash)
 NewV=$(git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/')
 CVersion=$(head -n2 /usr/local/bin/exodus-update | sed 's|[#!/bin/bash ]||g')
+CVersion=$(echo $CVersion)
 if [ "$OldV" = "$NewV" ] ;then 
    echo -e "Script Version is ""\e[92m${CVersion}\e[0m"" and up to date"
 else
