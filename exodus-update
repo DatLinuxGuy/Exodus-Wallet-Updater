@@ -127,7 +127,7 @@ cd ~/.config/Exodus-Wallet-Updater/
 mkdir logs > /dev/null 2>&1
 OldV=$(cat .script.hash)
 NewV=$(git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/')
-CVersion=$(head -n1 /usr/local/bin/exodus-update | sed 's|[+#]||g')
+CVersion=$(head -n2 /usr/local/bin/exodus-update | sed 's|[#!/bin/bash]||g')
 if [ "$OldV" = "$NewV" ] ;then 
    echo -e "Script Version is ""\e[92m${CVersion}\e[0m"" and up to date"
 else
