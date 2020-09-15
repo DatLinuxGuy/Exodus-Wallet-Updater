@@ -1,5 +1,5 @@
-#V4.72
 #!/bin/bash
+#V4.73
 
 # Built for Ubuntu 18.04
 # Ideas are welcome
@@ -115,7 +115,7 @@ else
    cd Exodus-Wallet-Updater
    chmod +x exodus-update
    sudo mv exodus-update /usr/local/bin/exodus-update
-   show=$(head -n1 /usr/local/bin/exodus-update | sed 's|[#]||g' )
+   show=$(head -n2 /usr/local/bin/exodus-update | sed 's|[#!/bin/bash]||g' )
    git ls-remote origin -h refs/heads/master | sed 's/\(.\{40\}\).*/\1/' > .script.hash
    chmod -w .script.hash
    echo -e "Version ""\e[92m${show}\e[0m"" has been installed"
@@ -159,9 +159,6 @@ echo -e "Your current wallet version is ""\e[92m${Version}"" \e[0m- looking for 
 fi
 
 cd ~/Downloads/ExodusTemp
-
-# Check if exodus is runnig and close
-
 
 # Grab and install wallet
 if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1  | grep 'HTTP/1.1 200 OK'` ]] ;then
