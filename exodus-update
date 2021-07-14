@@ -100,8 +100,10 @@ Date10=$(date +"%-y.%-m.%-d" -d "10 days ago")
 Date11=$(date +"%-y.%-m.%-d" -d "11 days ago")
 Date12=$(date +"%-y.%-m.%-d" -d "12 days ago")
 Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
-Address1=$'https://exodusbin.azureedge.net/releases/exodus_'
+Address1=$'https://downloads.exodus.com/releases/exodus-linux-x64-'
 Address2=$'.deb'
+
+https://downloads.exodus.com/releases/exodus-linux-x64-21.7.2.deb
 
 # Sometimes .config is not created on fresh install of ubuntu (test on ubuntu server) 
 mkdir -p ~/.config
