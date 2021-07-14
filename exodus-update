@@ -1,5 +1,5 @@
 #!/bin/bash
-#V4.81
+#V4.82
 
 # Built for Ubuntu 18.04
 # Ideas are welcome
@@ -49,7 +49,7 @@ Install () {
    if ls ~/Downloads/ExodusTemp/exodus* ;then
       echo "Please input your admin password to install wallet"
       echo ""
-      sudo dpkg -i exodus_* 
+      sudo dpkg -i exodus-* 
       sleep 1
       V=$(/usr/bin/exodus --version)
       cd ~/Downloads
@@ -102,8 +102,6 @@ Date12=$(date +"%-y.%-m.%-d" -d "12 days ago")
 Date13=$(date +"%-y.%-m.%-d" -d "13 days ago")
 Address1=$'https://downloads.exodus.com/releases/exodus-linux-x64-'
 Address2=$'.deb'
-
-https://downloads.exodus.com/releases/exodus-linux-x64-21.7.2.deb
 
 # Sometimes .config is not created on fresh install of ubuntu (test on ubuntu server) 
 mkdir -p ~/.config
@@ -173,7 +171,7 @@ if [[ `wget -S --spider ${Address1}${Date}${Address2} 2>&1  | grep 'HTTP/1.1 200
       echo -e "Exodus version ""\e[92m${Date}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -187,7 +185,7 @@ if [[ `wget -S --spider ${Address1}${Date1}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date1}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date1}${Address2} 2>&1 -q --show-progress 
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date1}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -201,7 +199,7 @@ if [[ `wget -S --spider ${Address1}${Date2}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date2}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date2}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date2}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -215,7 +213,7 @@ if [[ `wget -S --spider ${Address1}${Date3}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date3}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date3}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date3}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -228,7 +226,7 @@ if [[ `wget -S --spider ${Address1}${Date4}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date4}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date4}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date4}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -242,7 +240,7 @@ if [[ `wget -S --spider ${Address1}${Date5}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date5}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date5}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date5}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -256,7 +254,7 @@ if [[ `wget -S --spider ${Address1}${Date6}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date6}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date6}${Address2} 2>&1 -q --show-progress 
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date6}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -270,7 +268,7 @@ if [[ `wget -S --spider ${Address1}${Date7}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date7}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date7}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date7}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -284,7 +282,7 @@ if [[ `wget -S --spider ${Address1}${Date8}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date8}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date8}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date8}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -298,7 +296,7 @@ if [[ `wget -S --spider ${Address1}${Date9}${Address2} 2>&1  | grep 'HTTP/1.1 20
       echo -e "Exodus version ""\e[92m${Date9}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date9}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date9}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -312,7 +310,7 @@ if [[ `wget -S --spider ${Address1}${Date10}${Address2} 2>&1  | grep 'HTTP/1.1 2
       echo -e "Exodus version ""\e[92m${Date10}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date10}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date10}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -326,7 +324,7 @@ if [[ `wget -S --spider ${Address1}${Date11}${Address2} 2>&1  | grep 'HTTP/1.1 2
       echo -e "Exodus version ""\e[92m${Date11}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date11}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date11}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -340,7 +338,7 @@ if [[ `wget -S --spider ${Address1}${Date12}${Address2} 2>&1  | grep 'HTTP/1.1 2
       echo -e "Exodus version ""\e[92m${Date12}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date12}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date12}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
@@ -354,7 +352,7 @@ if [[ `wget -S --spider ${Address1}${Date13}${Address2} 2>&1  | grep 'HTTP/1.1 2
       echo -e "Exodus version ""\e[92m${Date13}"" \e[0mis available to download. Downloading now, Please wait"
          wget ${Address1}${Date12}${Address2} 2>&1 -q --show-progress
          Hashremote=$(curl -s https://downloads.exodus.com/releases/hashes-exodus-${Date13}.txt | grep ".deb" | sed 's/\(.\{64\}\).*/\1/')
-         Hashlocal=$(sha256sum exodus_* | sed 's/\(.\{64\}\).*/\1/')
+         Hashlocal=$(sha256sum exodus-* | sed 's/\(.\{64\}\).*/\1/')
          HashCheck #Call function
          killexodus #Call function
          Install #Call function
